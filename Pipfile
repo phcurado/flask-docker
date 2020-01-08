@@ -10,6 +10,7 @@ pytest-flask = "*"
 [packages]
 flask = "*"
 flask-sqlalchemy = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.8"
