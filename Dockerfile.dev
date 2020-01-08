@@ -11,11 +11,8 @@ RUN pip install --upgrade pip && \
 
 COPY . .
 
-WORKDIR /app/src
+# WORKDIR /app/src
 
 ENV PYTHONDONTWRITEBYTECODE 1
-ENV FLASK_APP "app.py"
-ENV FLASK_ENV "development"
-ENV FLASK_DEBUG True
 
 CMD flask run --host=0.0.0.0
