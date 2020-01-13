@@ -23,5 +23,5 @@ flask db migrate
 
 Apply Migration:
 ```
-flask db migrate
+flask db upgrade
 ```
