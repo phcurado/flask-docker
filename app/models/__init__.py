@@ -1,4 +1,4 @@
-from flask_migrate import Migrate, MigrateCommand
+from flask_migrate import Migrate
 
 from .base import db
 from .user import User
