@@ -13,6 +13,7 @@ flask-sqlalchemy = "*"
 psycopg2-binary = "*"
 flask-migrate = "*"
 uwsgi = "*"
+marshmallow = "*"
 
 [requires]
 python_version = "3.8"

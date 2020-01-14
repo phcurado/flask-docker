@@ -5,8 +5,10 @@ def create_app():
 
     app.config.from_pyfile('config.py')
 
-    from . import models, controllers
+    from .api import models
     models.init_app(app)
+
+    from .web import controllers
     controllers.init_app(app)
 
     return app
