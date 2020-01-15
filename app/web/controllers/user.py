@@ -12,6 +12,13 @@ def index():
     result = schema.dump(user)
     return jsonify(result)
 
+@user_controller.route('/<user_id>', methods=['GET'])
+def show(user_id):
+    scheme = UserSchema()
+    user = get_user(user_id)
+    result = scheme.dump(user)
+    return jsonify(result)
+
 @user_controller.route('', methods=['POST'])
 def create():
     scheme = UserSchema()
