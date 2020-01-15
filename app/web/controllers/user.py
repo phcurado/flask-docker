@@ -6,22 +6,29 @@ import sys
 user_controller = Blueprint('user', __name__, url_prefix='/api/users')
 
 @user_controller.route('', methods=['GET'])
-def get_users():
+def index():
     user = list_users()
     schema = UserSchema(many=True)
     result = schema.dump(user)
     return jsonify(result)
 
 @user_controller.route('', methods=['POST'])
-def create_user():
-    data = request.get_json()
-    print(data, file=sys.stderr)
-    schema = UserSchema(data)
-    print(data, file=sys.stderr)
+def create():
+    scheme = UserSchema()
+    data = scheme.load(request.get_json())
+    user = create_user(data)
+    result = scheme.dump(user)
+    return jsonify(result)
 
-    return jsonify(result='asdf')
+@user_controller.route('/<user_id>', methods=['PUT'])
+def edit(user_id):
+    scheme = UserSchema()
+    data = scheme.load(request.get_json())
+    user = get_user(user_id)
+    user = edit_user(user, data)
+    result = scheme.dump(user)
+    return jsonify(result)
 
-
-@user_controller.route('', methods=['DELETE'])
-def delete_user():
-    return jsonify(hello='world!')
+@user_controller.route('/<user_id>', methods=['DELETE'])
+def delete(user_id):
+    return delete_user(user_id)
