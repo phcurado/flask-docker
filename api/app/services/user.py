@@ -1,10 +1,10 @@
-from app.api.models.user import User
 from sqlalchemy.orm import Session
-from app.api.database.instance import db
 from sqlalchemy.exc import SQLAlchemyError
-from app.base_error import BaseError
+from api.app.models.user import User
+from api.app.database.instance import db
+from api.base_error import BaseError
+from api.web.views.user import user_schema, users_schema
 from ..utils.paginator import Paginator
-from app.web.views.user import user_schema, users_schema
 
 def list_paginate_users(page = None, per_page = None):
     return Paginator.paginate(User, page, per_page)

@@ -12,7 +12,7 @@ def create_app():
     return app
 
 def setup_database(app):
-    from .api import database
+    from .app import database
     database.init_app(app)
 
 def setup_routes(app):

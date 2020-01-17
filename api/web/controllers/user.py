@@ -1,9 +1,9 @@
 from flask import Blueprint, request, current_app, abort
-from app.api.services.user import *
-from app.web.views.user import user_schema, users_schema
 from marshmallow import ValidationError
-from app.base_error import BaseError
-from app.web.utils.header import get_page, get_per_page
+from api.app.services.user import *
+from api.web.views.user import user_schema, users_schema
+from api.base_error import BaseError
+from api.web.utils.header import get_page, get_per_page
 
 user_controller = Blueprint('user', __name__, url_prefix='/api/users')
 
