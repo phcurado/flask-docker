@@ -6,16 +6,16 @@ def create_app():
 
     app.config.from_pyfile('config.py')
 
-    setup_models(app)
-    setup_controllers(app)
+    setup_database(app)
+    setup_routes(app)
 
     return app
 
-def setup_models(app):
-    from .api import models
-    models.init_app(app)
+def setup_database(app):
+    from .api import database
+    database.init_app(app)
 
-def setup_controllers(app):
+def setup_routes(app):
     from .web import controllers
     controllers.init_app(app)
 

@@ -21,17 +21,14 @@ def index():
 @user_controller.route('/<user_id>', methods=['GET'])
 def show(user_id):
     user = get_user(user_id)
-    result = user_schema.dump(user)
-    return result
+    return user
 
 @user_controller.route('', methods=['POST'])
 def create():
     try:
         data = user_schema.load(request.get_json())
         user = create_user(data)
-        current_app.logger.info('User created Successfully')
-        result = user_schema.dump(user)
-        return result, 201
+        return user, 201
     except (BaseError, ValidationError) as error:
         current_app.logger.info(error.messages)
         return { 'error': error.messages }, 400
@@ -40,10 +37,8 @@ def create():
 def edit(user_id):
     try:
         data = user_schema.load(request.get_json())
-        user = get_user(user_id)
-        user = edit_user(user, data)
-        result = user_schema.dump(user)
-        return result, 201
+        user = edit_user(user_id, data)
+        return user, 201
     except (BaseError, ValidationError) as error:
         current_app.logger.info(error.messages)
         return { 'error': error.messages }, 400

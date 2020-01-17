@@ -1,6 +1,6 @@
-from app.api.models import User
+from app.api.models.user import User
 from sqlalchemy.orm import Session
-from app.api.models.base import db
+from app.api.database.instance import db
 from sqlalchemy.exc import SQLAlchemyError
 from app.base_error import BaseError
 from ..utils.paginator import Paginator
@@ -10,23 +10,25 @@ def list_paginate_users(page = None, per_page = None):
     return Paginator.paginate(User, page, per_page)
 
 def get_user(id):
-    return db.session.query(User).get(id)
+    user = db.session.query(User).get(id)
+    return user_schema.dump(user)
     
-def create_user(user_schema):
-    user = map(User(), user_schema)
+def create_user(user_params):
+    user = map(User(), user_params)
     try:
         db.session.add(user)
         db.session.commit()
-        return user
+        return user_schema.dump(user)
     except SQLAlchemyError as error:
         raise BaseError(error)
 
-def edit_user(user, user_schema):
-    user = map(user, user_schema)
+def edit_user(id, user_params):
+    user = db.session.query(User).get(id)
+    user = map(user, user_params)
     try:
         db.session.add(user)
         db.session.commit()
-        return user
+        return user_schema.dump(user)
     except SQLAlchemyError as error:
         raise BaseError(error)
 
