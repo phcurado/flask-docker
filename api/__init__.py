@@ -46,7 +46,7 @@ def setup_logs():
             'formatter': 'default'
         }},
         'root': {
-            'level': 'WARN',
+            'level': 'INFO',
             'handlers': ['wsgi']
         }
     })
