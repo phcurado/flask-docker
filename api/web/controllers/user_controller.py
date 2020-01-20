@@ -20,8 +20,15 @@ def index():
 
 @user_controller.route('/<user_id>', methods=['GET'])
 def show(user_id):
-    user = get_user(user_id)
-    return user
+    try:
+        user = get_user(user_id)
+        if user:
+            return user, 201
+        else:
+            abort(404)
+    except (BaseError, ValidationError) as error:
+        current_app.logger.info(error.messages)
+        return { 'error': error.messages }, 400
 
 @user_controller.route('', methods=['POST'])
 def create():
@@ -46,4 +53,9 @@ def edit(user_id):
 
 @user_controller.route('/<user_id>', methods=['DELETE'])
 def delete(user_id):
-    return delete_user(user_id)
+    try:
+        id = delete_user(user_id)
+        return id, 204
+    except (BaseError, ValidationError) as error:
+        current_app.logger.info(error.messages)
+        return { 'error': error.messages }, 400
