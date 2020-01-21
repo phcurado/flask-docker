@@ -25,3 +25,15 @@ Apply Migration:
 ```
 flask db upgrade
 ```
+## Testing
+
+This application has unit tests! In order to run and verify then you must enter in the container:
+```
+docker-compose exec api bash
+```
+
+and then run the tests:
+```
+pytest
+```
+if you want to create more tests just add a new file inside the `tests` folder with a prefix `test_*`. Pytest will automatically test all files with this prefix.

@@ -3,13 +3,15 @@ from sqlalchemy.exc import SQLAlchemyError
 from api.app.models.user import User
 from api.app.database.instance import db
 from api.base_error import BaseError
-from api.web.views.user import user_schema, users_schema
+from api.web.views.user_schema import user_schema, users_schema
 from ..utils.paginator import Paginator
+import sys
 
-def list_paginate_users(page = None, per_page = None):
-    return Paginator.paginate(User, page, per_page)
+def list_paginate_users(query_dict, page = None, per_page = None):
+    query = query_builder(db.session.query(User), query_dict)
+    return Paginator.paginate(query, page, per_page)
 
-def get_user(id):
+def get_user(id):    
     user = db.session.query(User).get(id)
     return user_schema.dump(user)
     
@@ -43,8 +45,15 @@ def map(user_model, user_schema):
     user_model.email = user_schema["email"]
     return user_model
 
-def query_username(username):
-    return db.session.query(User).filter(User.username.like(username + '%'))
+def query_builder(query, query_dict):
+    if 'username' in query_dict:
+        query = query_by_username(query, query_dict['username'])
+    if 'email' in query_dict:
+        query = query_by_email(query, query_dict['email'])
+    return query
 
-def query_email(email):
-    return db.session.query(User).filter(User.email.like(email + '%'))
+def query_by_username(query, username):
+    return query.filter(User.username.like(username + '%'))
+
+def query_by_email(query, email):
+    return query.filter(User.email.like(email + '%'))

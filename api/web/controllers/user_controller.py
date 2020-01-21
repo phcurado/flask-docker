@@ -1,7 +1,7 @@
-from flask import Blueprint, request, current_app, abort
+from flask import Blueprint, request, current_app, abort, jsonify
 from marshmallow import ValidationError
-from api.app.services.user import *
-from api.web.views.user import user_schema, users_schema
+from api.app.services.user_service import *
+from api.web.views.user_schema import user_schema, users_schema
 from api.base_error import BaseError
 from api.web.utils.header import get_page, get_per_page
 
@@ -9,10 +9,11 @@ user_controller = Blueprint('user', __name__, url_prefix='/api/users')
 
 @user_controller.route('', methods=['GET'])
 def index():
-    ## pagination
+    ## pages and per page options
     page = get_page(request.headers)
     per_page = get_per_page(request.headers)
-    pagination = list_paginate_users(page, per_page)
+    ## pagination
+    pagination = list_paginate_users(request.args.to_dict(), page, per_page)
     ## data json
     pagination['data'] = users_schema.dump(pagination['data'])
 
