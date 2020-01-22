@@ -42,10 +42,10 @@ def create():
         return { 'error': error.messages }, 400
 
 @user_controller.route('/<user_id>', methods=['PUT'])
-def edit(user_id):
+def update(user_id):
     try:
         data = user_schema.load(request.get_json())
-        user = edit_user(user_id, data)
+        user = update_user(user_id, data)
         return user, 201
     except (BaseError, ValidationError) as error:
         current_app.logger.info(error.messages)
