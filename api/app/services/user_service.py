@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm.exc import NoResultFound
 from api.app.models.user import User
 from api.app.models.user_address import UserAddress
 from api.app.database.instance import db
@@ -24,19 +25,21 @@ def create_user(user_params):
         return user_schema.dump(user)
     except SQLAlchemyError as error:
         db.session.rollback()
-        raise BaseError(error)
+        raise BaseError(error.orig)
     finally:
         db.session.close()
 
 def update_user(id, user_params):
     try:
-        user = db.session.query(User).get(id)
+        user = db.session.query(User).filter(User.id == id).one()
         user = map_user(user, user_params)
         db.session.add(user)
         db.session.commit()
         return user_schema.dump(user)
     except SQLAlchemyError as error:
         db.session.rollback()
+        raise BaseError(error.orig)
+    except NoResultFound as error:
         raise BaseError(error)
     finally:
         db.session.close()
@@ -48,7 +51,7 @@ def delete_user(id):
         db.session.commit()
     except SQLAlchemyError as error:
         db.session.rollback()
-        raise BaseError(error)
+        raise BaseError(error.orig)
     finally:
         db.session.close()
     return id

@@ -1,12 +1,14 @@
 from flask import Flask
 from flask_migrate import upgrade
-from api.config import DevelopmentConfig
+from api.config import set_config_class
 from sqlalchemy_utils import database_exists, create_database
 
-def create_app(config_class=DevelopmentConfig):
+def create_app(config_class = None):
     setup_logs()
     app = Flask(__name__)
 
+    if config_class == None:
+        config_class = set_config_class()
     app.config.from_object(config_class)
 
     setup_database(app, config_class.SQLALCHEMY_DATABASE_URI)

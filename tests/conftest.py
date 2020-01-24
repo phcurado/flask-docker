@@ -1,19 +1,8 @@
 import pytest
-from api import create_app, setup_database, create_database
+from api import create_ap
 from api.config import TestingConfig
 from api.app.database.instance import db
 
-import os
-import tempfile
-
-import sqlalchemy
-
-import sys
-import pytest
-
-from flask_migrate import migrate, upgrade
-
-from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, drop_database
 
 @pytest.fixture(scope='session', autouse=True)
